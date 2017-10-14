@@ -1,0 +1,28 @@
+{
+    "name": "chrisullyott/php-ssl-monitor",
+    "description": "Monitor SSL certificate expirations.",
+    "keywords": [
+        "ssl", "php"
+    ],
+    "homepage": "https://github.com/chrisullyott/php-ssl-monitor",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Chris Ullyott",
+            "email": "contact@chrisullyott.com",
+            "homepage": "http://www.chrisullyott.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/chrisullyott/php-ssl-monitor/issues",
+        "source": "https://github.com/chrisullyott/php-ssl-monitor"
+    },
+    "require": {
+        "php": ">=5.6.0"
+    },
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    }
+}
