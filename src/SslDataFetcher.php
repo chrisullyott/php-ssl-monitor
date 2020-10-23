@@ -84,12 +84,12 @@ class SslDataFetcher
     {
         $socket = "ssl://{$hostname}:443";
 
-        $context = stream_context_create(array(
-            'ssl' => array(
+        $context = stream_context_create([
+            'ssl' => [
                 'capture_peer_cert' => true,
                 'verify_peer' => false
-            )
-        ));
+            ]
+        ]);
 
         $stream = stream_socket_client($socket, $errno, $errstr, 30, STREAM_CLIENT_CONNECT, $context);
         $streamParams = stream_context_get_params($stream);
@@ -98,7 +98,7 @@ class SslDataFetcher
             return openssl_x509_parse($streamParams['options']['ssl']['peer_certificate']);
         }
 
-        return array();
+        return [];
     }
 
     /**

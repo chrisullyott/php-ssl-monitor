@@ -20,14 +20,14 @@ class SslMonitor
      *
      * @var array
      */
-    private $domains = array();
+    private $domains = [];
 
     /**
      * A list of domains paired with their SSL certificate expiration times.
      *
      * @var array
      */
-    private $expirations = array();
+    private $expirations = [];
 
     /**
      * The number of days into the future to include expirations (ie, will expire).
@@ -160,7 +160,7 @@ class SslMonitor
      */
     private function isWeekend()
     {
-        return in_array(date('D', $this->getTime()), array('Sat', 'Sun'));
+        return in_array(date('D', $this->getTime()), ['Sat', 'Sun']);
     }
 
     /**
@@ -175,10 +175,10 @@ class SslMonitor
                 $fetcher = new SslDataFetcher($domain);
 
                 if ($expTime = $fetcher->get('validTo_time_t')) {
-                    $this->expirations[] = array(
+                    $this->expirations[] = [
                         'domain' => $domain,
                         'time' => $expTime
-                    );
+                    ];
                 }
             }
 
@@ -228,7 +228,7 @@ class SslMonitor
      */
     private function buildExpirationList()
     {
-        $list = array();
+        $list = [];
 
         foreach ($this->getExpirations() as $exp) {
             if (!$this->shouldNotify($exp['time'])) {
@@ -244,7 +244,7 @@ class SslMonitor
             }
 
             if (!isset($list[$group])) {
-                $list[$group] = array();
+                $list[$group] = [];
             }
 
             $list[$group][] = $exp;
@@ -297,7 +297,7 @@ class SslMonitor
      */
     private static function secondsToString($seconds)
     {
-        $units = array(
+        $units = [
             'year'   => 60 * 60 * 24 * 365,
             'month'  => 60 * 60 * 24 * 30,
             'week'   => 60 * 60 * 24 * 7,
@@ -305,7 +305,7 @@ class SslMonitor
             'hour'   => 60 * 60,
             'minute' => 60,
             'second' => 1
-        );
+        ];
 
         foreach ($units as $n => $s) {
             if ($seconds >= $s) {
@@ -337,8 +337,8 @@ class SslMonitor
      */
     private static function sortByKey($array, $key, $reverse = false)
     {
-        $sorter = array();
-        $ret = array();
+        $sorter = [];
+        $ret = [];
         reset($array);
 
         foreach ($array as $ii => $va) {
