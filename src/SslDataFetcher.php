@@ -86,7 +86,7 @@ class SslDataFetcher
     private function fetchOrGetFromCache($hostname, $expiration = '1 day')
     {
         $cacheKey = md5($hostname);
-        $cacheDir = __DIR__ . './cache';
+        $cacheDir = __DIR__ . '/cache';
         $cacheObj = new Cache($cacheKey, $cacheDir);
 
         $cache = $cacheObj->get();
