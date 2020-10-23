@@ -12,7 +12,7 @@ composer require chrisullyott/php-ssl-monitor
 
 ### Setup
 
-```
+```php
 include 'vendor/autoload.php';
 
 $domains = array(
