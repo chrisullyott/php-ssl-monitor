@@ -15,11 +15,11 @@ composer require chrisullyott/php-ssl-monitor
 ```php
 include 'vendor/autoload.php';
 
-$domains = array(
+$domains = [
     'www.domainone.com',
     'www.domaintwo.com',
     'www.domainthree.com'
-);
+];
 
 $monitor = new SslMonitor($domains);
 
