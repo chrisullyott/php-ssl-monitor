@@ -55,7 +55,7 @@ class SslDataFetcher
     }
 
     /**
-     * Get data from the SSL certificate, optionall by key.
+     * Get data from the SSL certificate, optionally by a key.
      *
      * @param string $key A given array key
      * @return mixed
