@@ -5,6 +5,9 @@
  *
  * Chris Ullyott <contact@chrisullyott.com>
  */
+
+use ChrisUllyott\Cache;
+
 class SslDataFetcher
 {
     /**
@@ -63,11 +66,35 @@ class SslDataFetcher
     public function get($key = null)
     {
         if (is_null($this->data)) {
-            $this->data = self::fetch($this->getHostname());
+            $this->data = $this->fetchOrGetFromCache($this->hostname);
         }
 
         if ($key) {
             return isset($this->data[$key]) ? $this->data[$key] : null;
+        }
+
+        return $this->data;
+    }
+
+    /**
+     * Get the host data from the cache or fetch it fresh.
+     * 
+     * @param  string $hostname   
+     * @param  string $expiration 
+     * @return array 
+     */
+    private function fetchOrGetFromCache($hostname, $expiration = '1 day')
+    {
+        $cacheKey = md5($hostname);
+        $cacheObj = new Cache($cacheKey);
+
+        $cache = $cacheObj->get();
+
+        if (isset($cache['time']) && $cache['time'] > strtotime("-{$expiration}")) {
+            $this->data = $cache['data'];
+        } else {
+            $this->data = self::fetch($this->getHostname());
+            $cacheObj->set(['time' => time(), 'data' => $this->data]);
         }
 
         return $this->data;
