@@ -1,15 +1,13 @@
 # php-ssl-monitor
 
-Monitor SSL certificate expirations.
+Monitor SSL certificate expiration dates.
 
 ### Installation
 
 With Composer:
 
 ```
-"require": {
-    "chrisullyott/php-ssl-monitor": "dev-master"
-}
+composer require chrisullyott/php-ssl-monitor
 ```
 
 ### Setup
