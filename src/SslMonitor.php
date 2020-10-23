@@ -5,7 +5,6 @@
  *
  * Chris Ullyott <contact@chrisullyott.com>
  */
-
 class SslMonitor
 {
     /**
