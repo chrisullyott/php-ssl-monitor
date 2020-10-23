@@ -32,7 +32,7 @@ $monitor->setCriticalDays(7);
 // The maximum number of days after expiration in order to still be notified.
 $monitor->setAfterDays(7);
 
-echo $monitor->buildMessage();
+echo $monitor->buildMessage() . "\n";
 ```
 
 ### Output
