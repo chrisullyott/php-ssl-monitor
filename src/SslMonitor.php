@@ -22,6 +22,13 @@ class SslMonitor
     private $domains = [];
 
     /**
+     * The path to the cache directory.
+     * 
+     * @var string
+     */
+    private $cacheDir;
+
+    /**
      * A list of domains paired with their SSL certificate expiration times.
      *
      * @var array
@@ -54,9 +61,10 @@ class SslMonitor
      *
      * @param array $domains A list of domains to check.
      */
-    public function __construct($domains)
+    public function __construct($domains, $cacheDir = null)
     {
         $this->domains = (array) $domains;
+        $this->cacheDir = $cacheDir ? $cacheDir : __DIR__ . '/cache';
     }
 
     /**
@@ -171,7 +179,7 @@ class SslMonitor
     {
         if (!$this->expirations) {
             foreach ($this->getDomains() as $domain) {
-                $fetcher = new SslDataFetcher($domain);
+                $fetcher = new SslDataFetcher($domain, $this->cacheDir);
 
                 if ($expTime = $fetcher->get('validTo_time_t')) {
                     $this->expirations[] = [

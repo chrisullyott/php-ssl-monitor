@@ -25,13 +25,22 @@ class SslDataFetcher
     private $data;
 
     /**
+     * The path to the cache directory.
+     * 
+     * @var string
+     */
+    private $cacheDir;
+
+    /**
      * Constructor.
      *
      * @param string $url The URL or domain to fetch information about
+     * @param string $cacheDir The cache directory
      */
-    public function __construct($url)
+    public function __construct($url, $cacheDir)
     {
         $this->setHostname(self::getHostFromUrl($url));
+        $this->setCacheDir($cacheDir);
     }
 
     /**
@@ -58,6 +67,39 @@ class SslDataFetcher
     }
 
     /**
+     * Set the cache directory.
+     *
+     * @param string $cacheDir The cache directory.
+     * @return self
+     */
+    public function setCacheDir($cacheDir)
+    {
+        $this->cacheDir = $cacheDir;
+
+        return $this;
+    }
+
+    /**
+     * Get the cache directory.
+     *
+     * @return string
+     */
+    public function getCacheDir()
+    {
+        return $this->cacheDir;
+    }
+
+    /**
+     * Get the cache key.
+     * 
+     * @return string 
+     */
+    private function getCacheKey()
+    {
+        return md5($this->getHostname());
+    }
+
+    /**
      * Get data from the SSL certificate, optionally by a key.
      *
      * @param string $key A given array key
@@ -66,7 +108,7 @@ class SslDataFetcher
     public function get($key = null)
     {
         if (is_null($this->data)) {
-            $this->data = $this->fetchOrGetFromCache($this->hostname);
+            $this->data = $this->fetchOrGetFromCache('1 hour');
         }
 
         if ($key) {
@@ -83,15 +125,13 @@ class SslDataFetcher
      * @param  string $expiration 
      * @return array 
      */
-    private function fetchOrGetFromCache($hostname, $expiration = '1 day')
+    private function fetchOrGetFromCache($expiration)
     {
-        $cacheKey = md5($hostname);
-        $cacheDir = __DIR__ . '/cache';
-        $cacheObj = new Cache($cacheKey, $cacheDir);
+        $cacheObj = new Cache($this->getCacheKey(), $this->getCacheDir());
 
         $cache = $cacheObj->get();
 
-        if (isset($cache['time']) && $cache['time'] > strtotime("-{$expiration}")) {
+        if (isset($cache['time']) && strtotime("-{$expiration}") < $cache['time']) {
             $this->data = $cache['data'];
         } else {
             $this->data = self::fetch($this->getHostname());
